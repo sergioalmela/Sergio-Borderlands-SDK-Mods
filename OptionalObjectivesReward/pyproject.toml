@@ -8,8 +8,8 @@ Rewards scale with playthrough difficulty (Normal/TVHM/UVHM).
 """
 
 [project.urls]
-Repository = "https://github.com/sergioalmela/Sergio-Borderlands-SDK-Mods/tree/main/optional-objectives-reward"
-Changelog = "https://github.com/sergioalmela/Sergio-Borderlands-SDK-Mods/blob/main/optional-objectives-reward/README.md"
+Repository = "https://github.com/sergioalmela/Sergio-Borderlands-SDK-Mods/tree/main/OptionalObjectivesReward"
+Changelog = "https://github.com/sergioalmela/Sergio-Borderlands-SDK-Mods/blob/main/OptionalObjectivesReward/README.md"
 
 [tool.sdkmod]
 name = "Optional Objectives Rewards"
