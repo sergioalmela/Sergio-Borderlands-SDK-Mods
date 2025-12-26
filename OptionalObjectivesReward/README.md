@@ -2,6 +2,8 @@
 
 Automatically rewards **ALL** optional objectives in Borderlands 2 and The Pre-Sequel.
 
+![Screenshot](screenshots/screenshot.jpg)
+
 ## Features
 
 - ✅ **Automatic Detection**: Finds and rewards every optional objective in the game
