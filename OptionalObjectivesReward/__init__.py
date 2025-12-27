@@ -18,6 +18,8 @@ __version_info__: tuple[int, ...] = (1, 0, 0)
 
 def on_slider_change(option: SliderOption, new_value: int) -> None:
     """Called when any slider value changes - reapply rewards."""
+    if not option.mod or not option.mod.is_enabled:
+        return
     logging.info(f"[Optional Objectives] Slider '{option.identifier}' changed to {new_value}, reapplying rewards...")
     apply_rewards()
 
@@ -73,38 +75,17 @@ def get_playthrough() -> int:
     return 0
 
 
-def apply_rewards() -> None:
-    """Apply rewards to all optional objectives in the game."""
-    playthrough = get_playthrough()
+def set_objective_rewards(cash_scale: float, xp_scale: float) -> None:
+    """
+    Set rewards for all optional objectives.
 
-    # For cash rewards, use decimal scaling (0.5, 1.0, 2.0)
-    cash_scales = [
-        normal_slider.value / 100.0,
-        tvhm_slider.value / 100.0,
-        uvhm_slider.value / 100.0,
-    ]
-    cash_scale = cash_scales[min(playthrough, 2)]
-
-    # For XP rewards, use percentage values (50, 100, 200)
-    xp_scales = [
-        normal_slider.value,
-        tvhm_slider.value,
-        uvhm_slider.value,
-    ]
-    xp_scale = xp_scales[min(playthrough, 2)]
-
-    playthrough_names = ["Normal", "TVHM", "UVHM"]
-    logging.info(
-        f"[Optional Objectives] Detected playthrough: {playthrough} ({playthrough_names[min(playthrough, 2)]})"
-    )
-    logging.info(
-        f"[Optional Objectives] Applying rewards - Cash scale: {cash_scale}, XP scale: {xp_scale}"
-    )
-
+    Args:
+        cash_scale: Cash reward multiplier
+        xp_scale: XP reward percentage value
+    """
     all_missions = list(unrealsdk.find_all("MissionDefinition"))
-    logging.info(f"[Optional Objectives] Found {len(all_missions)} total MissionDefinitions")
-
     count = 0
+
     for mission in all_missions:
         if not mission:
             continue
@@ -135,13 +116,50 @@ def apply_rewards() -> None:
             logging.error(f"[Optional Objectives] Error processing mission: {e}")
             continue
 
-    logging.info(f"[Optional Objectives] Applied rewards to {count} optional objectives")
+    logging.info(f"[Optional Objectives] Modified {count} optional objectives")
+
+
+def apply_rewards() -> None:
+    """Apply rewards to all optional objectives in the game."""
+    playthrough = get_playthrough()
+
+    # For cash rewards, use decimal scaling (0.5, 1.0, 2.0)
+    cash_scales = [
+        normal_slider.value / 100.0,
+        tvhm_slider.value / 100.0,
+        uvhm_slider.value / 100.0,
+    ]
+    cash_scale = cash_scales[min(playthrough, 2)]
+
+    # For XP rewards, use percentage values (50, 100, 200)
+    xp_scales = [
+        normal_slider.value,
+        tvhm_slider.value,
+        uvhm_slider.value,
+    ]
+    xp_scale = xp_scales[min(playthrough, 2)]
+
+    playthrough_names = ["Normal", "TVHM", "UVHM"]
+    logging.info(
+        f"[Optional Objectives] Detected playthrough: {playthrough} ({playthrough_names[min(playthrough, 2)]})"
+    )
+    logging.info(
+        f"[Optional Objectives] Applying rewards - Cash scale: {cash_scale}, XP scale: {xp_scale}"
+    )
+
+    set_objective_rewards(cash_scale, xp_scale)
 
 
 def on_enable() -> None:
     """Called when the mod is enabled."""
     logging.info("[Optional Objectives] Mod enabled")
     apply_rewards()
+
+
+def on_disable() -> None:
+    """Called when the mod is disabled - reset all rewards to 0."""
+    logging.info("[Optional Objectives] Mod disabled, resetting rewards to 0")
+    set_objective_rewards(0.0, 0.0)
 
 
 @hook("WillowGame.WillowPlayerController:WillowClientDisableLoadingMovie")
