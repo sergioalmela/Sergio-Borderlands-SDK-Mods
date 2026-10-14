@@ -12,8 +12,8 @@ from unrealsdk import logging
 from unrealsdk.hooks import Type
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 
-__version__: str = "1.0.0"
-__version_info__: tuple[int, ...] = (1, 0, 0)
+__version__: str = "1.1.0"
+__version_info__: tuple[int, ...] = (1, 1, 0)
 
 
 def on_slider_change(option: SliderOption, new_value: int) -> None:
@@ -97,19 +97,27 @@ def set_objective_rewards(cash_scale: float, xp_scale: float) -> None:
                     if not objective:
                         continue
 
-                    # Check if this is an optional objective using bObjectiveIsOptional
-                    if hasattr(objective, "bObjectiveIsOptional") and objective.bObjectiveIsOptional:
+                    # BL2 flags optional objectives with bObjectiveIsOptional and keeps the rewards on the
+                    # objective; TPS gives optional objectives an OptionalInfo object holding the rewards
+                    if hasattr(objective, "OptionalInfo"):
+                        rewards = objective.OptionalInfo
+                    elif hasattr(objective, "bObjectiveIsOptional") and objective.bObjectiveIsOptional:
+                        rewards = objective
+                    else:
+                        rewards = None
+
+                    if rewards:
                         # Set the credit reward
-                        if hasattr(objective, "OptionalCreditRewardMultiplier"):
-                            objective.OptionalCreditRewardMultiplier.BaseValueAttribute = None
-                            objective.OptionalCreditRewardMultiplier.BaseValueConstant = 0.0
-                            objective.OptionalCreditRewardMultiplier.BaseValueScaleConstant = cash_scale
+                        if hasattr(rewards, "OptionalCreditRewardMultiplier"):
+                            rewards.OptionalCreditRewardMultiplier.BaseValueAttribute = None
+                            rewards.OptionalCreditRewardMultiplier.BaseValueConstant = 0.0
+                            rewards.OptionalCreditRewardMultiplier.BaseValueScaleConstant = cash_scale
 
                         # Set XP reward with proper scaling (percentage of base mission XP)
-                        if hasattr(objective, "OptionalExperienceRewardPercentage"):
-                            objective.OptionalExperienceRewardPercentage.BaseValueAttribute = None
-                            objective.OptionalExperienceRewardPercentage.BaseValueConstant = xp_scale / 2000.0
-                            objective.OptionalExperienceRewardPercentage.BaseValueScaleConstant = 1.0
+                        if hasattr(rewards, "OptionalExperienceRewardPercentage"):
+                            rewards.OptionalExperienceRewardPercentage.BaseValueAttribute = None
+                            rewards.OptionalExperienceRewardPercentage.BaseValueConstant = xp_scale / 2000.0
+                            rewards.OptionalExperienceRewardPercentage.BaseValueScaleConstant = 1.0
 
                         count += 1
         except Exception as e:
