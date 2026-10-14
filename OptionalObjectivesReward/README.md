@@ -21,9 +21,9 @@ Automatically rewards **ALL** optional objectives in Borderlands 2 and The Pre-S
 
 Open the mod options in-game to configure:
 
-- **Normal Mode Reward**: Percentage for Normal mode (default: 50%)
-- **TVHM Reward**: Percentage for TVHM (default: 100%)
-- **UVHM Reward**: Percentage for UVHM (default: 200%)
+- **Normal Mode Reward**: Percentage for Normal mode (default: 500%)
+- **TVHM Reward**: Percentage for TVHM (default: 500%)
+- **UVHM Reward**: Percentage for UVHM (default: 500%)
 
 ## How It Works
 
@@ -45,6 +45,10 @@ If you want to build the .sdkmod file yourself:
 3. The .sdkmod file will be generated
 
 ## Changelog
+
+### Version 1.2
+- Sliders now go up to 1000% in steps of 50
+- All playthroughs default to 500%
 
 ### Version 1.1
 - Fix rewards not being applied in The Pre-Sequel (optional objective rewards live in `OptionalInfo`)

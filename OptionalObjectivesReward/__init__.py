@@ -12,8 +12,8 @@ from unrealsdk import logging
 from unrealsdk.hooks import Type
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 
-__version__: str = "1.1.0"
-__version_info__: tuple[int, ...] = (1, 1, 0)
+__version__: str = "1.2.0"
+__version_info__: tuple[int, ...] = (1, 2, 0)
 
 
 def on_slider_change(option: SliderOption, new_value: int) -> None:
@@ -27,34 +27,34 @@ def on_slider_change(option: SliderOption, new_value: int) -> None:
 # Configuration options
 normal_slider = SliderOption(
     identifier="Normal Mode Reward",
-    value=50,
+    value=500,
     min_value=0,
-    max_value=500,
-    step=10,
+    max_value=1000,
+    step=50,
     is_hidden=False,
-    description="Reward percentage for Normal mode (50 = 50% of base reward)",
+    description="Reward percentage for Normal mode (500 = 500% of base reward)",
     on_change=on_slider_change,
 )
 
 tvhm_slider = SliderOption(
     identifier="TVHM Reward",
-    value=100,
+    value=500,
     min_value=0,
-    max_value=500,
-    step=10,
+    max_value=1000,
+    step=50,
     is_hidden=False,
-    description="Reward percentage for TVHM (100 = 100% of base reward)",
+    description="Reward percentage for TVHM (500 = 500% of base reward)",
     on_change=on_slider_change,
 )
 
 uvhm_slider = SliderOption(
     identifier="UVHM Reward",
-    value=200,
+    value=500,
     min_value=0,
-    max_value=500,
-    step=10,
+    max_value=1000,
+    step=50,
     is_hidden=False,
-    description="Reward percentage for UVHM (200 = 200% of base reward)",
+    description="Reward percentage for UVHM (500 = 500% of base reward)",
     on_change=on_slider_change,
 )
 
