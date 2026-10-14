@@ -1,6 +1,6 @@
 [project]
 name = "optional_objectives_reward"
-version = "1.0"
+version = "1.1"
 authors = [{ name = "Sergio Almela" }]
 description = """\
 Automatically rewards ALL optional objectives in Borderlands 2 and The Pre-Sequel.

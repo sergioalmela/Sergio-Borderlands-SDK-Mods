@@ -46,6 +46,9 @@ If you want to build the .sdkmod file yourself:
 
 ## Changelog
 
+### Version 1.1
+- Fix rewards not being applied in The Pre-Sequel (optional objective rewards live in `OptionalInfo`)
+
 ### Version 1.0 (Initial Release)
 - Automatic detection of all optional objectives
 - Playthrough-based scaling (Normal/TVHM/UVHM)
